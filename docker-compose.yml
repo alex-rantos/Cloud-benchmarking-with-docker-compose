@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "3306:27017"
+
+  benchmark:
+    image: nclcloudcomputing/javabenchmarkapp
+    ports:
+      - "80:8080"
+    deploy:
+      replicas: 2
+
+  visualizer:
+    image: dockersamples/visualizer
+    ports:
+      - "88:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+      - "/dev/disk/:/dev/disk:ro"
+
